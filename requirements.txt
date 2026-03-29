@@ -1,6 +1,4 @@
 streamlit
-scikit-learn
-pandas
 numpy
-imbalanced-learn
-pickle
+pandas
+scikit-learn
