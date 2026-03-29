@@ -10,13 +10,10 @@ import pandas as pd
 import streamlit as st
 
 # ── Cargar el modelo ──────────────────────────────────────────────────────────
-@st.cache_resource
-def cargar_modelo():
-    filename = "modelo-cla.pkl"
-    model_rf, labelencoder, variables, min_max_scaler = pickle.load(open(filename, "rb"))
-    return model_rf, labelencoder, variables, min_max_scaler
-
-model_rf, labelencoder, variables, min_max_scaler = cargar_modelo()
+# Cargamos el modelo
+import pickle
+filename = 'modelo-cla.pkl'
+modelo, min_max_scaler, variables = pickle.load(open(filename, 'rb'))
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
