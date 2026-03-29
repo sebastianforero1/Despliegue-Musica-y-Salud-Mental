@@ -12,7 +12,7 @@ filename = "modelo-cla.pkl"
 
 try:
     with open(filename, "rb") as f:
-        modelo, min_max_scaler, variables = pickle.load(f)
+        modelo, min_max_scaler, variables = pickle.load(open(filename, 'rb'))
 except Exception as e:
     st.error(f"Error cargando el modelo: {e}")
     st.stop()
