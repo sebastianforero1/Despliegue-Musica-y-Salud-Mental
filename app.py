@@ -193,7 +193,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.progress(100 / 3)
+st.progress(33, text="Paso 1 de 3")
 st.caption("Completa los 3 pasos y luego haz clic en **Ver resultado**.")
 
 with st.form("form_bienestar_musical"):
