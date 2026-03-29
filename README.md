@@ -1,7 +1,7 @@
 # 🎵 Música & Bienestar — Predictor de Impacto Musical en la Salud Mental
 
 > Aplicación web interactiva que predice si los hábitos musicales de una persona pueden tener un efecto positivo en su bienestar emocional, utilizando un modelo de clasificación entrenado con datos reales.
-
+> Desplegada en: https://despliegue-musica-y-salud-mental-moqsnonbrqyp93pij7g7xq.streamlit.app
 ---
 
 ## 📋 Tabla de Contenidos
