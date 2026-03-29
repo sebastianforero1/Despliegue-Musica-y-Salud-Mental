@@ -4,8 +4,8 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="Música & Salud Mental",
-    page_icon="🎵",
+    page_title="Música y bienestar",
+    page_icon="🎧",
     layout="centered",
 )
 
@@ -28,237 +28,268 @@ except Exception as e:
 # ── Estilos ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-:root{
-    --bg:#f7f4ef;
-    --card:#ffffff;
-    --ink:#1f1728;
-    --muted:#6f667c;
-    --line:#e8e1d8;
-    --accent:#6c4cf1;
-    --accent-soft:#efeaff;
-    --success-bg:#eaf7ee;
-    --success-bd:#b8e0c2;
-    --danger-bg:#fff1f3;
-    --danger-bd:#f5b7c2;
-    --radius:16px;
+:root {
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --text: #18212f;
+    --muted: #64748b;
+    --line: #e5e7eb;
+    --primary: #2563eb;
+    --primary-soft: #eff6ff;
+    --ok-bg: #ecfdf3;
+    --ok-border: #b7ebc6;
+    --warn-bg: #fff7ed;
+    --warn-border: #fed7aa;
+    --radius: 18px;
 }
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif !important;
     background: var(--bg) !important;
-    color: var(--ink) !important;
+    color: var(--text) !important;
 }
 
-#MainMenu, header, footer {visibility:hidden;}
-.block-container{
-    max-width: 820px !important;
+#MainMenu, header, footer {visibility: hidden;}
+
+.block-container {
+    max-width: 860px !important;
     padding-top: 2rem !important;
     padding-bottom: 4rem !important;
 }
 
 .hero {
-    background: #171221;
-    color: white;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    border: 1px solid var(--line);
     border-radius: 24px;
-    padding: 1.8rem;
+    padding: 1.6rem;
     margin-bottom: 1rem;
-    border: 1px solid rgba(255,255,255,.06);
 }
-.hero h1{
-    font-family: 'DM Serif Display', serif !important;
+
+.hero h1 {
+    margin: 0 0 .5rem 0;
     font-size: 2rem;
-    margin: 0 0 .4rem 0;
-    color: white !important;
+    color: var(--text) !important;
 }
-.hero p{
-    color: rgba(255,255,255,.72) !important;
+
+.hero p {
     margin: 0;
+    color: var(--muted) !important;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.pill {
+    display: inline-block;
+    padding: .35rem .7rem;
+    border-radius: 999px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: .78rem;
+    font-weight: 600;
+    margin-bottom: .8rem;
+}
+
+.box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.box h3 {
+    margin: 0 0 .35rem 0;
+    font-size: 1.05rem;
+}
+
+.box p {
+    margin: 0;
+    color: var(--muted);
     line-height: 1.55;
 }
-.badge {
-    display:inline-block;
-    padding:.35rem .7rem;
-    border-radius:999px;
-    background: rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.12);
-    font-size:.75rem;
-    margin-bottom:.8rem;
-}
 
-.section-card{
-    background: var(--card);
-    border:1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.25rem 1rem 1.25rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 16px rgba(26,21,35,.04);
-}
-
-.section-title{
-    font-size:.82rem;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color: var(--muted);
-    margin-bottom: .9rem;
-}
-
-.helper {
-    color: var(--muted);
-    font-size: .93rem;
-    margin: .25rem 0 0 0;
-}
-
-.result-ok, .result-no {
+.result-good, .result-neutral {
     border-radius: 18px;
-    padding: 1.2rem 1.2rem;
-    margin: 1rem 0 1rem 0;
+    padding: 1.2rem;
     border: 1px solid;
-}
-.result-ok{
-    background: var(--success-bg);
-    border-color: var(--success-bd);
-}
-.result-no{
-    background: var(--danger-bg);
-    border-color: var(--danger-bd);
-}
-.result-title{
-    font-size:.78rem;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color: var(--muted);
-    font-weight:700;
-    margin-bottom:.35rem;
-}
-.result-text{
-    font-size:1.2rem;
-    font-weight:700;
-    color: var(--ink);
+    margin-top: 1rem;
 }
 
-.stButton > button, .stFormSubmitButton > button {
+.result-good {
+    background: var(--ok-bg);
+    border-color: var(--ok-border);
+}
+
+.result-neutral {
+    background: var(--warn-bg);
+    border-color: var(--warn-border);
+}
+
+.result-label {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: .35rem;
+}
+
+.result-main {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: .4rem;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: .6rem .9rem;
+}
+
+.stTabs [aria-selected="true"] {
+    background: var(--primary-soft) !important;
+    color: var(--primary) !important;
+    border-color: #bfdbfe !important;
+}
+
+.stFormSubmitButton > button {
     width: 100% !important;
-    background: var(--accent) !important;
+    background: var(--primary) !important;
     color: white !important;
-    border: none !important;
     border-radius: 12px !important;
+    border: none !important;
     padding: .85rem 1rem !important;
     font-weight: 700 !important;
 }
-.stButton > button:hover, .stFormSubmitButton > button:hover {
-    opacity: .92;
-}
 
-div[data-testid="stExpander"]{
-    border:1px solid var(--line) !important;
+div[data-testid="stExpander"] {
+    border: 1px solid var(--line) !important;
     border-radius: 14px !important;
-    background: #fcfbf9 !important;
+    background: #fbfcfe !important;
 }
 
-label, .stLabel, div[data-testid="stWidgetLabel"] p{
-    font-weight:600 !important;
-    color: var(--ink) !important;
-}
-
-hr{
-    border:none;
-    border-top:1px solid var(--line);
-    margin:1rem 0;
+.small-note {
+    color: var(--muted);
+    font-size: .92rem;
+    margin-bottom: .75rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Hero ──────────────────────────────────────────────────────────────────────
+# ── Encabezado ────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero">
-    <div class="badge">Predicción con Random Forest</div>
-    <h1>Música y salud mental</h1>
-    <p>Completa tu perfil, tus indicadores de bienestar y tus preferencias musicales.
-    Al final recibirás una predicción orientativa sobre el efecto de la música en tu bienestar mental.</p>
+    <div class="pill">Predicción orientativa</div>
+    <h1>¿La música podría ayudarte a sentirte mejor?</h1>
+    <p>Responde unas preguntas sencillas sobre tus hábitos, cómo te has sentido últimamente
+    y qué tipo de música escuchas. Al final te mostraremos un resultado fácil de entender.</p>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<p class='helper'>Consejo: deja los valores sugeridos si solo quieres probar la app rápidamente.</p>", unsafe_allow_html=True)
+st.progress(100 / 3)
+st.caption("Completa los 3 pasos y luego haz clic en **Ver resultado**.")
 
-with st.form("music_mental_health_form"):
-    st.markdown('<div class="section-card"><div class="section-title">Perfil personal</div>', unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
-    with col1:
-        Age = st.slider("Edad", 10, 89, 22)
-        Hours_per_day = st.slider("Horas de música al día", 0, 24, 3)
-    with col2:
-        Primary_streaming = st.selectbox(
-            "Servicio de streaming principal",
-            ["Spotify", "YouTube Music", "Apple Music", "Pandora",
-             "I do not use a streaming service.", "Other streaming service"]
+with st.form("form_bienestar_musical"):
+    tab1, tab2, tab3 = st.tabs(["1. Sobre ti", "2. Cómo te sientes", "3. Tu música"])
+
+    with tab1:
+        st.markdown('<div class="box"><h3>Cuéntanos un poco sobre ti</h3><p>Esta información nos ayuda a entender tu contexto general de escucha.</p></div>', unsafe_allow_html=True)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            Age = st.slider("¿Qué edad tienes?", 10, 89, 22)
+            Hours_per_day = st.slider("¿Cuántas horas al día escuchas música?", 0, 24, 3)
+            st.caption("Incluye música mientras estudias, trabajas, haces ejercicio o descansas.")
+        with col2:
+            Primary_streaming = st.selectbox(
+                "¿Dónde escuchas música con más frecuencia?",
+                [
+                    "Spotify",
+                    "YouTube Music",
+                    "Apple Music",
+                    "Pandora",
+                    "I do not use a streaming service.",
+                    "Other streaming service"
+                ]
+            )
+            While_working = st.selectbox(
+                "¿Sueles escuchar música mientras trabajas o estudias?",
+                ["Yes", "No"]
+            )
+
+        col3, col4, col5 = st.columns(3)
+        with col3:
+            Instrumentalist = st.selectbox("¿Tocas algún instrumento?", ["Yes", "No"])
+        with col4:
+            Composer = st.selectbox("¿Compones música?", ["Yes", "No"])
+        with col5:
+            Exploratory = st.selectbox("¿Te gusta descubrir música nueva?", ["Yes", "No"])
+
+    with tab2:
+        st.markdown('<div class="box"><h3>Ahora piensa en cómo te has sentido</h3><p>Usa una escala de 0 a 10. No hace falta que sea exacto; basta con una aproximación honesta.</p></div>', unsafe_allow_html=True)
+
+        col6, col7, col8 = st.columns(3)
+        with col6:
+            Anxiety = st.slider("Ansiedad", 0, 10, 5)
+            st.caption("0 = nada, 10 = muy alta")
+        with col7:
+            Depression = st.slider("Desánimo o depresión", 0, 10, 3)
+            st.caption("0 = nada, 10 = muy alta")
+        with col8:
+            OCD = st.slider("Pensamientos o rutinas repetitivas (TOC)", 0, 10, 2)
+            st.caption("0 = nada, 10 = muy alta")
+
+        st.info("No es un diagnóstico clínico. Solo es una referencia para alimentar el modelo.")
+
+    with tab3:
+        st.markdown('<div class="box"><h3>Por último, cuéntanos qué música escuchas</h3><p>Empieza por lo más importante: tu género favorito y los géneros que más escuchas.</p></div>', unsafe_allow_html=True)
+
+        Fav_genre = st.selectbox(
+            "¿Cuál es tu género favorito?",
+            ["Classical", "Country", "EDM", "Folk", "Gospel", "Hip hop",
+             "Jazz", "K pop", "Latin", "Lofi", "Metal", "Pop",
+             "R&B", "Rap", "Rock", "Video game music"]
         )
-        While_working = st.selectbox("¿Escucha música mientras trabaja o estudia?", ["Yes", "No"])
 
-    col3, col4 = st.columns(2)
-    with col3:
-        Instrumentalist = st.selectbox("¿Toca algún instrumento?", ["Yes", "No"])
-    with col4:
-        Composer = st.selectbox("¿Compone música?", ["Yes", "No"])
+        st.markdown("<div class='small-note'>Marca con qué frecuencia escuchas estos géneros principales.</div>", unsafe_allow_html=True)
 
-    Exploratory = st.selectbox("¿Explora nuevos géneros o artistas?", ["Yes", "No"])
-    st.markdown("</div>", unsafe_allow_html=True)
+        freq_opts = ["Never", "Rarely", "Sometimes", "Very frequently"]
 
-    st.markdown('<div class="section-card"><div class="section-title">Bienestar emocional</div>', unsafe_allow_html=True)
-    st.markdown("<p class='helper'>Usa una escala de 0 a 10, donde 0 es nada y 10 es muy alto.</p>", unsafe_allow_html=True)
-    col5, col6, col7 = st.columns(3)
-    with col5:
-        Anxiety = st.slider("Ansiedad", 0, 10, 5)
-    with col6:
-        Depression = st.slider("Depresión", 0, 10, 3)
-    with col7:
-        OCD = st.slider("TOC", 0, 10, 2)
-    st.markdown("</div>", unsafe_allow_html=True)
+        col9, col10 = st.columns(2)
+        with col9:
+            f_pop = st.selectbox("Pop", freq_opts, index=2)
+            f_rock = st.selectbox("Rock", freq_opts, index=2)
+            f_latin = st.selectbox("Latin", freq_opts, index=2)
+            f_lofi = st.selectbox("Lofi", freq_opts, index=3)
+        with col10:
+            f_rap = st.selectbox("Rap", freq_opts, index=2)
+            f_hiphop = st.selectbox("Hip hop", freq_opts, index=2)
+            f_jazz = st.selectbox("Jazz", freq_opts, index=1)
+            f_classical = st.selectbox("Classical", freq_opts, index=1)
 
-    st.markdown('<div class="section-card"><div class="section-title">Preferencias musicales</div>', unsafe_allow_html=True)
-    Fav_genre = st.selectbox(
-        "Género favorito",
-        ["Classical", "Country", "EDM", "Folk", "Gospel", "Hip hop",
-         "Jazz", "K pop", "Latin", "Lofi", "Metal", "Pop",
-         "R&B", "Rap", "Rock", "Video game music"]
-    )
+        with st.expander("Completar géneros opcionales"):
+            st.caption("Solo completa esta parte si quieres afinar más la predicción.")
+            col11, col12, col13 = st.columns(3)
+            with col11:
+                f_country = st.selectbox("Country", freq_opts, index=0)
+                f_edm = st.selectbox("EDM", freq_opts, index=2)
+                f_folk = st.selectbox("Folk", freq_opts, index=1)
+            with col12:
+                f_gospel = st.selectbox("Gospel", freq_opts, index=0)
+                f_kpop = st.selectbox("K-pop", freq_opts, index=0)
+                f_metal = st.selectbox("Metal", freq_opts, index=1)
+            with col13:
+                f_rnb = st.selectbox("R&B", freq_opts, index=1)
+                f_videogame = st.selectbox("Video game music", freq_opts, index=1)
 
-    st.markdown("<p class='helper'>Primero completa los géneros principales. Si quieres más detalle, abre la sección avanzada.</p>", unsafe_allow_html=True)
-
-    col_a, col_b = st.columns(2)
-    freq_opts = ["Never", "Rarely", "Sometimes", "Very frequently"]
-
-    with col_a:
-        f_pop   = st.selectbox("Pop", freq_opts, index=2)
-        f_rock  = st.selectbox("Rock", freq_opts, index=2)
-        f_latin = st.selectbox("Latin", freq_opts, index=2)
-        f_rap   = st.selectbox("Rap", freq_opts, index=2)
-
-    with col_b:
-        f_lofi  = st.selectbox("Lofi", freq_opts, index=3)
-        f_hiphop = st.selectbox("Hip hop", freq_opts, index=2)
-        f_jazz  = st.selectbox("Jazz", freq_opts, index=1)
-        f_classical = st.selectbox("Classical", freq_opts, index=1)
-
-    with st.expander("Opciones avanzadas de géneros"):
-        col_c1, col_c2, col_c3 = st.columns(3)
-        with col_c1:
-            f_country = st.selectbox("Country", freq_opts, index=0)
-            f_edm = st.selectbox("EDM", freq_opts, index=2)
-            f_folk = st.selectbox("Folk", freq_opts, index=1)
-        with col_c2:
-            f_gospel = st.selectbox("Gospel", freq_opts, index=0)
-            f_kpop = st.selectbox("K-pop", freq_opts, index=0)
-            f_metal = st.selectbox("Metal", freq_opts, index=1)
-        with col_c3:
-            f_rnb = st.selectbox("R&B", freq_opts, index=1)
-            f_videogame = st.selectbox("Video game music", freq_opts, index=1)
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    submitted = st.form_submit_button("Predecir efecto de la música")
+    submitted = st.form_submit_button("Ver resultado")
 
 if submitted:
     datos = {
@@ -317,22 +348,26 @@ if submitted:
     Y_pred = labelencoder.inverse_transform(Y_pred_enc)
     resultado = Y_pred[0]
 
+    st.markdown("## Tu resultado")
+
     if resultado == "Improve":
         st.markdown("""
-        <div class="result-ok">
-            <div class="result-title">Resultado</div>
-            <div class="result-text">La música probablemente tenga un efecto positivo en tu bienestar mental</div>
+        <div class="result-good">
+            <div class="result-label">Interpretación</div>
+            <div class="result-main">Con este perfil, la música podría tener un efecto positivo en tu bienestar.</div>
         </div>
         """, unsafe_allow_html=True)
+        st.success("Esto sugiere que tus hábitos musicales se parecen a perfiles donde la música sí aporta una mejora percibida.")
     else:
         st.markdown("""
-        <div class="result-no">
-            <div class="result-title">Resultado</div>
-            <div class="result-text">No se detecta un efecto positivo claro con este perfil</div>
+        <div class="result-neutral">
+            <div class="result-label">Interpretación</div>
+            <div class="result-main">Con este perfil, no aparece una mejora clara asociada al uso de música.</div>
         </div>
         """, unsafe_allow_html=True)
+        st.warning("Esto no significa que la música no ayude nunca; solo que el modelo no detecta una señal positiva fuerte con estas respuestas.")
 
-    st.info("Este resultado es orientativo y no sustituye la evaluación de un profesional de salud mental.")
+    st.info("Este resultado es solo orientativo y no reemplaza apoyo profesional en salud mental.")
 
     with st.expander("Ver datos preparados para el modelo"):
         st.dataframe(data_prep, use_container_width=True, hide_index=True)
